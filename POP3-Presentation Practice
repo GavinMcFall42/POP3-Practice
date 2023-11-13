@@ -1,0 +1,29 @@
+import poplib
+
+pop3_server = "pop.gmail.com"
+pop3_port = 995
+
+# Your email credentials
+username = "replace with your email"
+password = "replace with your app password"  
+
+# Connect to the POP3 server
+server = poplib.POP3_SSL(pop3_server, pop3_port)
+
+# Login to your email account
+server.user(username)
+server.pass_(password)
+
+# Get the number of messages in the mailbox
+num_messages = len(server.list()[1])
+
+# Retrieve the latest email
+msg_num = num_messages
+resp, message_data, _ = server.retr(msg_num)
+email_message = b"\n".join(message_data).decode("utf-8")
+
+# Print the email content
+print(email_message)
+
+# Quit the server
+server.quit()
