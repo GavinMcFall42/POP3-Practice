@@ -3,17 +3,17 @@ import poplib
 def get_user_input(prompt):
     return input(prompt).strip()
 
-# Email configuration
-
 pop3_server = "pop.gmail.com"
 pop3_port = 995
 
 # Your email credentials
-username = "gavinmcfall42@gmail.com"
-password = "zgow bilz czea nrwc"  
+username = "Put your gmail account here"
+password = "put your app password here"  
 
 # Connect to the POP3 server
 server = poplib.POP3_SSL(pop3_server, pop3_port)
+
+authenticated = False
 
 while True:
     # Take user input for POP3 commands
@@ -29,11 +29,15 @@ while True:
         parameter = get_user_input("Enter {}: ".format(command))
         user_response = server.user(parameter)
         print("USER Response:", user_response)
+        authenticated = False  # Reset authentication status
     elif command == "PASS":
         # Take user input for PASS command
         parameter = get_user_input("Enter {}: ".format(command))
         pass_response = server.pass_(parameter)
         print("PASS Response:", pass_response)
+        authenticated = True  # Set authentication status to True
+    elif not authenticated:
+        print("Authentication required. Please enter USER and PASS first.")
     elif command == "STAT":
         # Manually input STAT command
         stat_response = server.stat()
@@ -50,4 +54,5 @@ while True:
         print("RETR Response:\n", email_message)
     else:
         print("Invalid command. Supported commands: USER, PASS, STAT, LIST, RETR, QUIT")
+
 
